@@ -3,6 +3,18 @@ body {
   font: 300 20px/1.5em "Oswald", sans-serif; }
 
 h1 {
-  margin: -19px 0 0 -17px;
-  font: bold 160px/1em "Oswald", sans-serif;
-  letter-spacing: -10px; }
+  margin: 25px 0 0 0;
+  padding: 0 20px;
+  font: bold 160px/135px "Oswald", sans-serif;
+  letter-spacing: -10px;
+  background: #131313;
+  color: #ffffff;
+  overflow: hidden;
+  background: url(/content/medowbank/IMG_4406.jpg) repeat 0 275px;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-size: 50%;
+}
+header{
+	background: #131313;
+}
