@@ -30,37 +30,66 @@ if ('development' == app.get('env')) {
 }
 
 var header = [
-  '<!doctype html>'
+   '<!doctype html>'
   ,'<html lang="en">'
-    ,'<head>'
-      ,'<meta charset="utf-8">'
-      ,'<title>Locations - etoxin</title>'
-      ,'<meta name="description" content="Image with Audio.">'
-      ,'<meta name="author" content="etoxin">'
-      ,'<link rel="stylesheet" href="css/styles.css?v=1.0">'
-      ,'<script src="scripts/locations.js"></script>'
-    ,'</head>'
-    ,'<body>'].join("\n");
+  ,'  <head>'
+  ,'    <meta charset="utf-8">'
+  ,'    <title>Locations - etoxin</title>'
+  ,'    <meta name="description" content="Image with Audio.">'
+  ,'    <meta name="author" content="etoxin">'
+  ,'    <link rel="stylesheet" href="css/styles.css?v=1.0">'
+  ,'    <script src="scripts/locations.js"></script>'
+  ,'  </head>'
+  ,'  <body>'].join("\n");
 var footer = [
-   '</body>'
+   '  </body>'
   ,'</html>'
 ].join("\n");
 
 app.get('/', function (req, res) {
-  res.send(header+footer);
+  var body = [
+    '<div class="wrapper">'
+    ,'  <header>'
+    ,'    <h1>L0CAT10NS</h1>'
+    ,'  </header>'
+    ,'  <div class="main"></div>'
+    ,'  <footer>'
+    ,'    <p>a website by <a href="http://etoxin.net">etoxin</a></p>'
+    ,'  </footer>'
+    ,'</div>'
+  ].join("\n");
+  res.send(header + body + footer);
 })
 
+// returns the folders with content
 app.get('/api/locations', function (req, res) {
-  var feed;
+  var feed = [];
+
   // get the contents of the folder
   fs.readdir('./content', function (fs_err, fs_res) {
+
     // if there is an error send and error.
     if(fs_err) {
       console.log(fs_err);
     }
-    console.log(fs_res);
-    feed = fs_res;
-    res.send(feed);
+
+    // read the sub directory
+    var length = fs_res.length;
+    for (var i = 0; i < length; i++) {
+      var element = fs_res[i];      
+      fs.readdir('./content/' + fs_res[i], function (fss_err, fss_res) {
+        // if there is an error send an error.
+        console.log(element);
+        feed.push({
+          'name': element,
+          'imagePath': '/content/'+fss_res[0],
+          'audioPath': '/content/'+fss_res[1]
+        });
+        // console.log(feed);
+      });
+    }
+    res.send('{'+feed+'}');
+
   });
 });
 
