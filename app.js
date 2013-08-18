@@ -16,6 +16,9 @@ var app = express();
 // all environments
 app.set('port', process.env.PORT || 3001);
 app.set('views', __dirname + '/views');
+app.use("/stylesheets", express.static(__dirname + '/stylesheets'));
+app.use("/scripts", express.static(__dirname + '/scripts'));
+app.use("/content", express.static(__dirname + '/content'));
 app.set('view engine', 'jade');
 app.use(express.favicon());
 app.use(express.logger('dev'));
@@ -37,7 +40,8 @@ var header = [
   ,'    <title>Locations - etoxin</title>'
   ,'    <meta name="description" content="Image with Audio.">'
   ,'    <meta name="author" content="etoxin">'
-  ,'    <link rel="stylesheet" href="css/styles.css?v=1.0">'
+  ,'    <link href="http://fonts.googleapis.com/css?family=Oswald:400,700,300" rel="stylesheet" type="text/css">'
+  ,'    <link href="stylesheets/locations.css?v=1.1" rel="stylesheet">'
   ,'    <script src="scripts/locations.js"></script>'
   ,'  </head>'
   ,'  <body>'].join("\n");
@@ -50,7 +54,7 @@ app.get('/', function (req, res) {
   var body = [
     '<div class="wrapper">'
     ,'  <header>'
-    ,'    <h1>L0CAT10NS</h1>'
+    ,'    <h1>LOCATIONS</h1>'
     ,'  </header>'
     ,'  <div class="main"></div>'
     ,'  <footer>'
