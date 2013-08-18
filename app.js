@@ -8,6 +8,7 @@ var express = require('express')
   , user = require('./routes/user')
   , http = require('http')
   , https = require('https')
+  , fs = require('fs')
   , path = require('path');
 
 var app = express();
@@ -28,14 +29,40 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+var header = [
+  '<!doctype html>'
+  ,'<html lang="en">'
+    ,'<head>'
+      ,'<meta charset="utf-8">'
+      ,'<title>Locations - etoxin</title>'
+      ,'<meta name="description" content="Image with Audio.">'
+      ,'<meta name="author" content="etoxin">'
+      ,'<link rel="stylesheet" href="css/styles.css?v=1.0">'
+      ,'<script src="scripts/locations.js"></script>'
+    ,'</head>'
+    ,'<body>'].join("\n");
+var footer = [
+   '</body>'
+  ,'</html>'
+].join("\n");
 
 app.get('/', function (req, res) {
-
-  var site = [
-    '<h1>Locations</h1>',
-    '<p>content here.</p>'].join("\n");
-  res.send(site);
+  res.send(header+footer);
 })
+
+app.get('/api/locations', function (req, res) {
+  var feed;
+  // get the contents of the folder
+  fs.readdir('./content', function (fs_err, fs_res) {
+    // if there is an error send and error.
+    if(fs_err) {
+      console.log(fs_err);
+    }
+    console.log(fs_res);
+    feed = fs_res;
+    res.send(feed);
+  });
+});
 
 
 http.createServer(app).listen(app.get('port'), function(){
