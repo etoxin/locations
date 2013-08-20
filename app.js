@@ -9,7 +9,8 @@ var express = require('express')
   , http = require('http')
   , https = require('https')
   , fs = require('fs')
-  , path = require('path');
+  , path = require('path')
+  , $ = require('jquery');
 
 var app = express();
 
@@ -48,10 +49,10 @@ var header = [
   ,'    <script src="scripts/locations.js"></script>'
   ,'  </head>'
   ,'  <body>'].join("\n");
+
 var footer = [
    '  </body>'
-  ,'</html>'
-].join("\n");
+  ,'</html>'].join("\n");
 
 app.get('/', function (req, res) {
   var body = [
@@ -70,6 +71,7 @@ app.get('/', function (req, res) {
 
 // returns the folders with content
 app.get('/api/locations', function (req, res) {
+  res.contentType('application/json');
   var feed = [];
 
   // get the contents of the folder
@@ -80,23 +82,21 @@ app.get('/api/locations', function (req, res) {
       console.log(fs_err);
     }
 
-    // read the sub directory
-    var length = fs_res.length;
-    for (var i = 0; i < length; i++) {
-      var element = fs_res[i];      
-      fs.readdir('./content/' + fs_res[i], function (fss_err, fss_res) {
-        // if there is an error send an error.
-        console.log(element);
+    var fs_res_length = fs_res.length;
+    // stuid node is asynchronouse
+    $.each(fs_res, function (index, value) {
+      fs.readdir('./content/' + value, function (fss_err, fss_res) {
         feed.push({
-          'name': element,
+          'name': value,
           'imagePath': '/content/'+fss_res[0],
           'audioPath': '/content/'+fss_res[1]
         });
-        // console.log(feed);
       });
-    }
-    res.send('{'+feed+'}');
-
+      if(index == fs_res_length - 1){
+        console.log(feed);
+        res.json(feed);        
+      }
+    });
   });
 });
 
