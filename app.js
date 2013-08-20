@@ -19,6 +19,7 @@ app.set('views', __dirname + '/views');
 app.use("/stylesheets", express.static(__dirname + '/stylesheets'));
 app.use("/scripts", express.static(__dirname + '/scripts'));
 app.use("/content", express.static(__dirname + '/content'));
+app.use("/partials", express.static(__dirname + '/partials'));
 app.set('view engine', 'jade');
 app.use(express.favicon());
 app.use(express.logger('dev'));
@@ -34,7 +35,7 @@ if ('development' == app.get('env')) {
 
 var header = [
    '<!doctype html>'
-  ,'<html lang="en">'
+  ,'<html lang="en" ng-app="locations">'
   ,'  <head>'
   ,'    <meta charset="utf-8">'
   ,'    <title>Locations - etoxin</title>'
@@ -42,6 +43,8 @@ var header = [
   ,'    <meta name="author" content="etoxin">'
   ,'    <link href="http://fonts.googleapis.com/css?family=Oswald:400,700,300" rel="stylesheet" type="text/css">'
   ,'    <link href="stylesheets/locations.css?v=1.1" rel="stylesheet">'
+  ,'    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>'
+  ,'    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>'
   ,'    <script src="scripts/locations.js"></script>'
   ,'  </head>'
   ,'  <body>'].join("\n");
@@ -56,7 +59,7 @@ app.get('/', function (req, res) {
     ,'  <header>'
     ,'    <h1>LOCATIONS</h1>'
     ,'  </header>'
-    ,'  <div class="main"></div>'
+    ,'  <div ng-view></div>'
     ,'  <footer>'
     ,'    <p>a website by <a href="http://etoxin.net">etoxin</a></p>'
     ,'  </footer>'
