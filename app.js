@@ -10,6 +10,7 @@ var express = require('express')
   , https = require('https')
   , fs = require('fs')
   , path = require('path')
+  , async = require('async')
   , $ = require('jquery');
 
 var app = express();
@@ -73,31 +74,46 @@ app.get('/', function (req, res) {
 app.get('/api/locations', function (req, res) {
   res.contentType('application/json');
   var feed = [];
-
-  // get the contents of the folder
-  fs.readdir('./content', function (fs_err, fs_res) {
-
-    // if there is an error send and error.
-    if(fs_err) {
-      console.log(fs_err);
-    }
-
-    var fs_res_length = fs_res.length;
-    // stuid node is asynchronouse
-    $.each(fs_res, function (index, value) {
-      fs.readdir('./content/' + value, function (fss_err, fss_res) {
-        feed.push({
-          'name': value,
-          'imagePath': '/content/'+fss_res[0],
-          'audioPath': '/content/'+fss_res[1]
+  // an example using an object instead of an array
+  async.series({
+      one: function(callback){
+        // get the contents of the folder
+        fs.readdir('./content', function (fs_err, fs_res) {
+          // if there is an error send and error.
+          if(fs_err) {
+            console.log(fs_err);
+          }
+          fs_res.forEach(function(item){
+            fs.readdir('./content/' + item, function (fss_err, fss_res) {
+              feed.push({
+                'name': item,
+                'imagePath': '/content/'+fss_res[0],
+                'audioPath': '/content/'+fss_res[1]
+              });
+            });  
+          });
         });
-      });
-      if(index == fs_res_length - 1){
-        console.log(feed);
-        res.json(feed);        
+        
+        callback();
+      },
+      two: function(callback){
+        setTimeout(function(){
+          res.json(feed);
+        }, 200);
+        callback();
       }
-    });
+  },
+  function(err, results) {
+      // results is now equal to: {one: 1, two: 2}
   });
+
+
+
+
+
+
+
+
 });
 
 
