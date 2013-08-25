@@ -47,5 +47,8 @@ function GalleryCtrl($scope, $http) {
 		if( scrollPosition >= itemPosition.top && scrollPosition <= (itemPosition.top + itemHeight) ){
 			document.getElementById('audio-medowbank').play();
 		}
+		if( scrollPosition < itemPosition.top || scrollPosition > (itemPosition.top + itemHeight) ){
+			document.getElementById('audio-medowbank').pause();
+		}
 	}
 }
