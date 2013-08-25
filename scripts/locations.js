@@ -1,35 +1,51 @@
+
+
+// pages
 angular.module('locations', []).
-  config(function($routeProvider) {
-    $routeProvider.
-      when('/', {controller:GalleryCtrl, templateUrl:'/partials/home.html'}).
-      otherwise({redirectTo:'/'});
-  });
+	config(function($routeProvider) {
+		$routeProvider.
+			when('/', {controller:GalleryCtrl, templateUrl:'/partials/home.html'}).
+			otherwise({redirectTo:'/'});
+	});
 
 
 function GalleryCtrl($scope, $http) {
-  // get the elements
-  $http({method: 'GET', url: '/api/locations'}).
-  success(function(data, status, headers, config) {
-  	$scope.data = data;
-  	console.log($scope.data);
-  }).
-  error(function(data, status, headers, config) {
-  	$scope.status = status;
-  });
+	//define vars
 
-  var audioPlaying = false;
-
-  window.onscroll = function (oEvent) {
-  	var item = $('#item-medowbank');
-  	var scrollPosition = $('body').scrollTop();
-  	var itemPosition = item.offset();
-  	var itemHeight = item.height();
-
-	console.log('scroll position '+scrollPosition);
-	console.log('item position: '+itemPosition.top);
-	
-	if( scrollPosition >= itemPosition.top && scrollPosition <= (itemPosition.top + itemHeight) ){
-		document.getElementById('audio-medowbank').play();
+	$scope.audio = function () {
+		var items = $('.location-item');
+		$.each( items, function(index, value) {
+		  console.log(value);
+		});
 	}
-  }
+
+
+	// get the elements from feed
+	$http({method: 'GET', url: '/api/locations'}).
+	success(function(data, status, headers, config) {
+		$scope.locationItem = data;
+		$scope.audio();
+	}).
+	error(function(data, status, headers, config) {
+		$scope.status = status;
+	});
+
+
+
+
+
+	// run onscroll
+	window.onscroll = function (oEvent) {
+		var item = $('#item-medowbank'),
+			scrollPosition = $('body').scrollTop(),
+			itemPosition = item.offset(),
+			itemHeight = item.height();
+
+		// console.log('scroll position '+scrollPosition);
+		// console.log('item position: '+itemPosition.top);
+		
+		if( scrollPosition >= itemPosition.top && scrollPosition <= (itemPosition.top + itemHeight) ){
+			document.getElementById('audio-medowbank').play();
+		}
+	}
 }
