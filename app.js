@@ -88,8 +88,8 @@ app.get('/api/locations', function (req, res) {
             fs.readdir('./content/' + item, function (fss_err, fss_res) {
               feed.push({
                 'name': item,
-                'imagePath': '/content/'+fss_res[0],
-                'audioPath': '/content/'+fss_res[1]
+                'imagePath': '/content/'+item+'/'+fss_res[0],
+                'audioPath': '/content/'+item+'/'+fss_res[1]
               });
               if(feed.length == arr_length - 1){
                 callback();
