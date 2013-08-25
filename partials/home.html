@@ -1,11 +1,4 @@
 <div class="gallery-list">
-	<div ng-repeat="item in locationItem">
-		<div id="item-{{item.name}}" class="location-item">
-			<h2>{{item.name}}</h2>
-			<img src="{{item.imagePath}}" alt="{{item.name}}" width="100%">
-			<audio src="{{item.audioPath}}" id="audio-{{item.name}}" controls loop>
-				<p>Your browser does not support the audio element. Please upgrade.</p>
-			</audio>
-		</div>
+	<div ng-repeat="item in locationItem" media-item-directive>
 	</div>
 </div>
