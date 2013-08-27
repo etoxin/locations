@@ -10,10 +10,10 @@ angular.module('locations', []).
 	directive('mediaItemDirective', function() {
 	  return {
 	  	controller: function ($scope) {
-			if($scope.$last){
-				console.log('Ready!');
-				console.log( $('#item-bedlam_bay').height() );
-			}			
+	  		$scope.active = true;
+	  		$scope.audio = {'playing': false};
+	  		$scope.yPosition = {'start': 0, 'end': 0};
+	  		console.log($scope);
 	  	},
 	  	template:
 	  		'<div id="item-{{item.name}}" class="location-item">'+
@@ -26,22 +26,25 @@ angular.module('locations', []).
 	  };
 	});
 
-
 function GalleryCtrl($scope, $http) {
 	$scope.audio = function () {
 		var items = $('.location-item');
 		console.log(items);
 		$.each( items, function(index, value) {
-		  // console.log(value);
+		  console.log('value');
 		});
 	}
 
-
-	// get the elements from feed
+	// populate the page
 	$http({method: 'GET', url: '/api/locations'}).
 	success(function(data, status, headers, config) {
 		$scope.locationItem = data;
-		$scope.audio();
+		$.each($scope.locationItem, function (key, value) {
+			var newItems = {
+				'inDom': false
+			}
+			$.extend(value, newItems);
+		});
 	}).
 	error(function(data, status, headers, config) {
 		$scope.status = status;
@@ -49,9 +52,9 @@ function GalleryCtrl($scope, $http) {
 
 
 
-	// var item = $('#item--medowbank'),
+	// var item = $('#item-medowbank'),
 	// 	scrollPosition = $('body').scrollTop(),
-	// 	itemPosition = $(item).offset(),
+	// 	itemPosition = item.offset(),
 	// 	itemHeight = item.height();
 	// if( scrollPosition >= itemPosition.top && scrollPosition <= (itemPosition.top + itemHeight) ){
 	// 	document.getElementById('audio-medowbank').play();
