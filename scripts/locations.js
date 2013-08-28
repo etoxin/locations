@@ -27,7 +27,20 @@ angular.module('locations', []).
 	}).
 	directive('audioMixer', function () {
 		return function ($scope, element, attrs) {
-			console.log(element.offset());
+		
+			$(window).scroll(function() {
+				var	elementPosition = element.offset(),
+					elementHeight = element.height(),
+					scrollPosition = $('body').scrollTop();
+				if( scrollPosition >= elementPosition.top && scrollPosition <= (elementPosition.top + elementHeight) ){
+					document.getElementById('audio-'+$scope.item.name).play();
+					console.log($scope.item.name);
+				}
+				if( scrollPosition < elementPosition.top || scrollPosition > (elementPosition.top + elementHeight) ){
+					document.getElementById('audio-'+$scope.item.name).pause();
+				}	
+			});
+
 		}
 	});
 
@@ -54,20 +67,6 @@ function GalleryCtrl($scope, $http) {
 	error(function(data, status, headers, config) {
 		$scope.status = status;
 	});
-
-
-
-	// var item = $('#item-medowbank'),
-	// 	scrollPosition = $('body').scrollTop(),
-	// 	itemPosition = item.offset(),
-	// 	itemHeight = item.height();
-	// if( scrollPosition >= itemPosition.top && scrollPosition <= (itemPosition.top + itemHeight) ){
-	// 	document.getElementById('audio-medowbank').play();
-	// }
-	// if( scrollPosition < itemPosition.top || scrollPosition > (itemPosition.top + itemHeight) ){
-	// 	document.getElementById('audio-medowbank').pause();
-	// }
-
 
 }
 
