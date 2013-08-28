@@ -11,12 +11,12 @@ angular.module('locations', []).
 	  return {
 	  	controller: function ($scope) {
 	  		$scope.active = true;
-	  		$scope.audio = {'playing': false};
+	  		$scope.audio = {'playing': false, 'Volumn': 0};
 	  		$scope.yPosition = {'start': 0, 'end': 0};
 	  		console.log($scope);
 	  	},
 	  	template:
-	  		'<div id="item-{{item.name}}" class="location-item">'+
+	  		'<div id="item-{{item.name}}" class="location-item" audio-mixer>'+
 			'	<h2>{{item.name}}</h2>'+
 			'	<img src="{{item.imagePath}}" alt="{{item.name}}" width="100%">'+
 			'	<audio src="{{item.audioPath}}" id="audio-{{item.name}}" controls loop>'+
@@ -24,6 +24,11 @@ angular.module('locations', []).
 			'	</audio>'+
 			'</div>'
 	  };
+	}).
+	directive('audioMixer', function () {
+		return function ($scope, element, attrs) {
+			console.log(element.offset());
+		}
 	});
 
 function GalleryCtrl($scope, $http) {
