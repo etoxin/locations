@@ -19,7 +19,7 @@ angular.module('locations', []).
 	  		'<div id="item-{{item.name}}" class="location-item" audio-mixer>'+
 			'	<h2>{{item.name}}</h2>'+
 			'	<img src="{{item.imagePath}}" alt="{{item.name}}" width="100%">'+
-			'	<audio src="{{item.audioPath}}" id="audio-{{item.name}}" controls loop>'+
+			'	<audio src="{{item.audioPath}}" id="audio-{{item.name}}" loop>'+
 			'		<p>Your browser does not support the audio element. Please upgrade.</p>'+
 			'	</audio>'+
 			'</div>'
@@ -31,12 +31,15 @@ angular.module('locations', []).
 			$(window).scroll(function() {
 				var	elementPosition = element.offset(),
 					elementHeight = element.height(),
-					scrollPosition = $('body').scrollTop();
-				if( scrollPosition >= elementPosition.top && scrollPosition <= (elementPosition.top + elementHeight) ){
+					browserHeight = $(window).height(),
+					scrollPosition = $('body').scrollTop(),
+					viewportCenter = scrollPosition + (browserHeight / 2);
+
+				if( viewportCenter >= elementPosition.top && viewportCenter <= (elementPosition.top + elementHeight) ){
 					document.getElementById('audio-'+$scope.item.name).play();
 					console.log($scope.item.name);
 				}
-				if( scrollPosition < elementPosition.top || scrollPosition > (elementPosition.top + elementHeight) ){
+				if( viewportCenter < elementPosition.top || viewportCenter > (elementPosition.top + elementHeight) ){
 					document.getElementById('audio-'+$scope.item.name).pause();
 				}	
 			});

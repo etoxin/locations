@@ -85,6 +85,7 @@ app.get('/api/locations', function (req, res) {
           }
           var arr_length = fs_res.length;
           fs_res.forEach(function(item, index){
+            console.log(item);
             fs.readdir('./content/' + item, function (fss_err, fss_res) {
               feed.push({
                 'name': item,
