@@ -11,7 +11,7 @@ angular.module('locations', []).
 	  return {
 	  	controller: function ($scope) {
 	  		$scope.active = true;
-	  		$scope.audio = {'playing': false, 'Volumn': 0};
+	  		$scope.audio = {'playing': false, 'Volume': 1};
 	  		$scope.yPosition = {'start': 0, 'end': 0};
 	  		console.log($scope);
 	  	},
@@ -37,15 +37,17 @@ angular.module('locations', []).
 
 				if( viewportCenter >= elementPosition.top && viewportCenter <= (elementPosition.top + elementHeight)){
 					sound.play();
-					if(sound.volume < 1){
-						sound.volume  = (sound.volume+=0.1).toFixed(1);						
+					if($scope.audio.Volume < 1){
+						$scope.audio.Volume += 0.07;
+						sound.volume  = $scope.audio.Volume.toFixed(1);						
 					}
 					$scope.audio.playing = true;
 				}
 
 				if( viewportCenter < elementPosition.top || viewportCenter > (elementPosition.top + elementHeight) && $scope.audio.playing == true){
-					if(sound.volume > 0){
-						sound.volume  = (sound.volume-=0.1).toFixed(1);						
+					if($scope.audio.Volume > 0){
+						$scope.audio.Volume -= 0.07;
+						sound.volume  = $scope.audio.Volume.toFixed(1);						
 					}
 				}	
 			});
