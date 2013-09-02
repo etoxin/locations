@@ -27,20 +27,26 @@ angular.module('locations', []).
 	}).
 	directive('audioMixer', function () {
 		return function ($scope, element, attrs) {
-		
 			$(window).scroll(function() {
 				var	elementPosition = element.offset(),
 					elementHeight = element.height(),
 					browserHeight = $(window).height(),
 					scrollPosition = $('body').scrollTop(),
+					sound = document.getElementById('audio-'+$scope.item.name),
 					viewportCenter = scrollPosition + (browserHeight / 2);
 
-				if( viewportCenter >= elementPosition.top && viewportCenter <= (elementPosition.top + elementHeight) ){
-					document.getElementById('audio-'+$scope.item.name).play();
-					console.log($scope.item.name);
+				if( viewportCenter >= elementPosition.top && viewportCenter <= (elementPosition.top + elementHeight)){
+					sound.play();
+					if(sound.volume < 1){
+						sound.volume  = (sound.volume+=0.1).toFixed(1);						
+					}
+					$scope.audio.playing = true;
 				}
-				if( viewportCenter < elementPosition.top || viewportCenter > (elementPosition.top + elementHeight) ){
-					document.getElementById('audio-'+$scope.item.name).pause();
+
+				if( viewportCenter < elementPosition.top || viewportCenter > (elementPosition.top + elementHeight) && $scope.audio.playing == true){
+					if(sound.volume > 0){
+						sound.volume  = (sound.volume-=0.1).toFixed(1);						
+					}
 				}	
 			});
 
