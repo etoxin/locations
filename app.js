@@ -19,7 +19,7 @@ var app = express();
 app.set('port', process.env.PORT || 3001);
 app.set('views', __dirname + '/views');
 app.use("/stylesheets", express.static(__dirname + '/stylesheets'));
-app.use("/scripts", express.static(__dirname + '/scripts'));
+app.use("/js", express.static(__dirname + '/js'));
 app.use("/content", express.static(__dirname + '/content'));
 app.use("/partials", express.static(__dirname + '/partials'));
 app.set('view engine', 'jade');
@@ -45,9 +45,10 @@ var header = [
   ,'    <meta name="author" content="etoxin">'
   ,'    <link href="http://fonts.googleapis.com/css?family=Oswald:400,700,300" rel="stylesheet" type="text/css">'
   ,'    <link href="stylesheets/locations.css?v=1.1" rel="stylesheet">'
-  ,'    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>'
-  ,'    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>'
-  ,'    <script src="scripts/locations.js"></script>'
+  //,'    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>'
+  //,'    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>'
+  //,'    <script src="scripts/locations.js"></script>'
+  ,'    <script data-main="js/main" src="js/bower_components/requirejs/require.js"></script>'
   ,'  </head>'
   ,'  <body>'].join("\n");
 
